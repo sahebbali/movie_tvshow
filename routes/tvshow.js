@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { createTvshowController, loginController } = require('../controller/tvshowController');
+const authenticated = require('../middleware/authenticate');
+const { createTvshowController, getTvshowById } = require('../controller/tvshowController');
 
-router.post('/createtvshow', createTvshowController);
+router.post('/createtvshow',authenticated, createTvshowController);
 
-router.post('/login', loginController);
+router.get('/tvshows/:id',authenticated, getTvshowById);
 
 module.exports = router;

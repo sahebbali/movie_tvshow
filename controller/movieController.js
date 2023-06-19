@@ -1,5 +1,8 @@
 
 const Movie = require('../models/MovieModel')
+const TVShow = require('../models/TvshowModel')
+
+// Create a movie (only for authenticated users)
 const createMovieController = async (req, res, next) => {
     try {
       const { title, director, releaseYear } = req.body;
@@ -35,36 +38,50 @@ const createMovieController = async (req, res, next) => {
     }
   };
   
-  const loginController = async (req, res, next) => {
-	const { email, password } = req.body;
+  // Get the details of a specific movie
+const getMoviesById = async (req, res, next) => {
+
+        const movieId = req.params.id;
+      
+        try {
+          const movie = await Movie.findById(movieId);
+          if (!movie) {
+            res.status(404).json({ error: 'Movie not found' });
+          } else {
+            res.json(movie);
+          }
+        } catch (err) {
+          console.error('Error retrieving movie:', err);
+          res.status(500).json({ error: 'Failed to retrieve movie' });
+        }
   
-	try {
-	  const user = await User.findOne({ email });
-  
-	  if (!user) {
-		return res.status(404).json({ error: 'User not found' });
-	  }
-  
-	  bcrypt.compare(password, user.password, (err, result) => {
-		if (result) {
-		  const token = jwt.sign(
-			{ id: user.id, username: user.username, role: user.role },
-			process.env.SECRET_KEY,
-			{ expiresIn: '1h' }
-		  );
-  
-		  // Set the token as a cookie
-		  res.cookie('token', token, { httpOnly: true });
-		  res.json({ message: 'Authentication successful' });
-		} else {
-		  res.status(401).json({ error: 'Authentication failed' });
-		}
-	  });
-	} catch (error) {
-	  console.error(error);
-	  res.status(500).json({ error: 'Internal server error' });
-	}
+      
   };
 
+  // Get a list of movies and TV shows
+  const listMovieAdnTvshow = async(req,res)=>{
+    try {
+        const movies = await Movie.find().populate('director producer');
+        const tvShows = await TVShow.find().populate('creators');
+        const movieCount = await Movie.countDocuments();
+        const tvShowCount = await TVShow.countDocuments();
+   
+        const media = {
+          movies,
+          tvShows,
+        };
+        res.json({ 
+            totalCounts: { 
+              "Total Movie": movieCount, 
+              "Total TV Show": tvShowCount 
+            },
+            media: media
+          });
+      } catch (err) {
+        console.error('Error retrieving media:', err);
+        res.status(500).json({ error: 'Failed to retrieve media' });
+      }
+  }
 
-module.exports = { createMovieController, loginController };
+
+module.exports = { createMovieController, getMoviesById, listMovieAdnTvshow };

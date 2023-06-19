@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const tvShowSchema = new mongoose.Schema({
     title: {
       type: String,
@@ -27,7 +28,4 @@ const tvShowSchema = new mongoose.Schema({
   
   const TVShow = mongoose.model('TVShow', tvShowSchema);
   
-  module.exports = {
-    Movie,
-    TVShow,
-  };
+  module.exports = TVShow;
