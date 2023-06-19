@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-// Movie Model
 const movieSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -22,9 +20,12 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tvShow: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TVShow',
+  },
 });
 
 const Movie = mongoose.model('Movie', movieSchema);
-module.exports = {
-  Movie,
-};
+
+module.exports = Movie;

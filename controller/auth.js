@@ -30,7 +30,6 @@ const registerController = async (req, res, next) => {
 	}
   };
   
-
   const loginController = async (req, res, next) => {
 	const { email, password } = req.body;
   
