@@ -20,6 +20,10 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  runtime:{
+    type: Number,
+    required: true,
+  },
   tvShow: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'TVShow',

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const authenticated = require('../middleware/authenticate');
 const { createMovieController, getMoviesById,listMovieAdnTvshow } = require('../controller/movieController');
 
 router.post('/createmovie', createMovieController);
