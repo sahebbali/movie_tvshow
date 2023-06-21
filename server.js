@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./db');
+const bodyParser = require ('body-parser')
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 require('dotenv').config();
@@ -7,7 +8,8 @@ require('dotenv').config();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 
 app.get('/', (_req, res) => {
