@@ -1,6 +1,8 @@
 
 const TVShow = require('../models/TvshowModel')
-const createTvshowController = async (req, res, next) => {
+ 
+// create TV show
+const createTvshowController = async (req, res) => {
     try {
         const { title, releaseYear, actors, creators,seasons } = req.body;
     
@@ -29,7 +31,7 @@ const createTvshowController = async (req, res, next) => {
   };
   
   // Get the details of a specific TV show
-  const getTvshowById = async (req, res, next) => {
+  const getTvshowById = async (req, res) => {
 	
         const tvShowId = req.params.id;
       

@@ -24,10 +24,7 @@ const movieSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tvShow: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'TVShow',
-  },
+
 });
 
 const Movie = mongoose.model('Movie', movieSchema);

@@ -16,14 +16,16 @@ const tvShowSchema = new mongoose.Schema({
       type: String,
       required: true,
     }],
+    
     seasons: {
       type: Number,
       required: true,
+    }, 
+     runtime:{
+      type: Number,
+      required: true,
     },
-    movies: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Movie',
-    }],
+  
   });
   
   const TVShow = mongoose.model('TVShow', tvShowSchema);

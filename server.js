@@ -1,11 +1,11 @@
 const express = require('express');
 const connectDB = require('./db');
-const authenticate = require('./middleware/authenticate');
+const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 require('dotenv').config();
 
 const app = express();
-
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(routes);

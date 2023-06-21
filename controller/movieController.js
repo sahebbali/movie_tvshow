@@ -4,7 +4,9 @@ const TVShow = require('../models/TvshowModel')
 
 // Create a movie (only for authenticated users)
 const createMovieController = async (req, res, next) => {
+
     try {
+
       const { title, director, releaseYear,runtime } = req.body;
   
       // Validate required fields
@@ -59,25 +61,47 @@ const getMoviesById = async (req, res, next) => {
       
   };
 
-  // Get a list of movies and TV shows
-  const listMovieAdnTvshow = async(req,res)=>{
+  // Get a list of movies and TV shows and show one
+  const listMovieAndTvShow = async (req, res) => {
+    try {
+      const movies = await Movie.find().populate('director producer');
+      const tvShows = await TVShow.find().populate('creators');
+      const movieCount = await Movie.countDocuments();
+      const tvShowCount = await TVShow.countDocuments();
+  
+      // Select one random movie and TV show
+      const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+      const randomTvShow = tvShows[Math.floor(Math.random() * tvShows.length)];
+      const media = {
+        movies: randomMovie,
+     
+      };
+  
+      res.json({
+        totalCounts: {
+          "Total Movie": movieCount,
+          "Total TV Show": tvShowCount,
+        },
+        media: media,
+      });
+    } catch (err) {
+      console.error('Error retrieving media:', err);
+      res.status(500).json({ error: 'Failed to retrieve media' });
+    }
+  };
+  
+  const getMovieAndTvshow = async(req,res)=>{
     try {
         const movies = await Movie.find().populate('director producer');
         const tvShows = await TVShow.find().populate('creators');
-        const movieCount = await Movie.countDocuments();
-        const tvShowCount = await TVShow.countDocuments();
-        const mediaList = [...movies.slice(0, 20), ...tvShows.slice(0, 20)];       
+
         
-        const media = {
+        const getMedia = {
           movies,
           tvShows,
         };
         res.json({ 
-            totalCounts: { 
-              "Total Movie": movieCount, 
-              "Total TV Show": tvShowCount 
-            },
-            media: mediaList
+          getMedia
           });
       } catch (err) {
         console.error('Error retrieving media:', err);
@@ -86,4 +110,4 @@ const getMoviesById = async (req, res, next) => {
   }
 
 
-module.exports = { createMovieController, getMoviesById, listMovieAdnTvshow };
+module.exports = { createMovieController, getMoviesById, listMovieAndTvShow,getMovieAndTvshow , };
